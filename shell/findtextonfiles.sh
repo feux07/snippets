@@ -1,1 +1,0 @@
-grep -rl --exclude-dir=node_modules  "text" .
