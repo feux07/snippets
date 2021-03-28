@@ -1,0 +1,46 @@
+sudo apt update
+
+sudo apt upgrade
+
+sudo apt install ufw
+sudo ufw allow ssh
+sudo ufw allow 9651
+sudo ufw enable
+sudo ufw status
+
+sudo apt install snapd
+
+sudo snap install docker
+
+sudo groupadd docker
+
+sudo usermod -aG docker $USER
+
+sudo reboot
+
+
+git clone https://github.com/ava-labs/avalanchego.git
+
+cd avalanchego
+
+./scripts/build_image.sh
+
+docker run -v ~/.avalanchego/:/root/.avalanchego/ -d --restart always -p 9650:9650 -p 9651:9651 "IMAGE_ID" /avalanchego/build/avalanchego --public-ip="VPS_IP_ADDRESS"
+
+
+curl -X POST --data '{
+    "jsonrpc":"2.0",
+    "id"     :1,
+    "method" :"info.isBootstrapped",
+    "params": {
+        "chain":"X"
+    }
+}' -H 'content-type:application/json;' 127.0.0.1:9650/ext/info
+
+
+curl -X POST --data '{
+    "jsonrpc":"2.0",
+    "id"     :1,
+    "method" :"health.getLiveness"
+}' -H 'content-type:application/json;' 127.0.0.1:9650/ext/health
+
