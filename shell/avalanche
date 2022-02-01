@@ -32,6 +32,9 @@ docker run -v ~/.avalanchego/:/root/.avalanchego/ -d --restart always -p 9650:96
 #FUJI
 docker run -v ~/.avalanchego/:/root/.avalanchego/ -d --restart always -p 9650:9650 -p 9651:9651 "IMAGE_ID" /avalanchego/build/avalanchego --public-ip="VPS_IP_ADDRESS" --network-id=fuji
 
+#SUBNET
+
+docker run -v ~/.avalanchego/:/root/.avalanchego/ -d --restart always -p 9650:9650 -p 9651:9651 "IMAGE_ID" /avalanchego/build/avalanchego --public-ip="VPS_IP_ADDRESS" --whitelisted-subnets=Ai42MkKqk8yjXFCpoHXw7rdTWSHiKEMqh5h8gbxwjgkCUfkrk --network-id=fuji
 
 curl -X POST --data '{
     "jsonrpc":"2.0",
