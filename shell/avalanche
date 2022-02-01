@@ -52,3 +52,6 @@ curl -X POST --data '{
     "method" :"health.getLiveness"
 }' -H 'content-type:application/json;' 127.0.0.1:9650/ext/health
 
+
+# https://go.dev/doc/install
+# https://github.com/ava-labs/spacesvm#joining-the-spaces-demo
