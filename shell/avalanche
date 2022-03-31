@@ -27,7 +27,7 @@ cd avalanchego
 ./scripts/build_image.sh
 
 #MAINNET
-docker run -v ~/.avalanchego/:/root/.avalanchego/ -d --restart always -p 9650:9650 -p 9651:9651 "IMAGE_ID" /avalanchego/build/avalanchego --public-ip="VPS_IP_ADDRESS"
+docker run -v ~/.avalanchego/:/root/.avalanchego/ -d --restart always -p 127.0.0.1:9650:9650 -p 9651:9651 "IMAGE_ID" /avalanchego/build/avalanchego --public-ip="VPS_IP_ADDRESS"
 
 #FUJI
 docker run -v ~/.avalanchego/:/root/.avalanchego/ -d --restart always -p 9650:9650 -p 9651:9651 "IMAGE_ID" /avalanchego/build/avalanchego --public-ip="VPS_IP_ADDRESS" --network-id=fuji
