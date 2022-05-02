@@ -18,6 +18,7 @@ sudo usermod -aG docker $USER
 
 sudo reboot
 
+sudo apt install golang
 
 git clone https://github.com/ava-labs/avalanchego.git
 
@@ -25,8 +26,15 @@ cd avalanchego
 
 ./scripts/build_image.sh
 
-docker run -v ~/.avalanchego/:/root/.avalanchego/ -d --restart always -p 9650:9650 -p 9651:9651 "IMAGE_ID" /avalanchego/build/avalanchego --public-ip="VPS_IP_ADDRESS"
+#MAINNET
+docker run -v ~/.avalanchego/:/root/.avalanchego/ -d --restart always -p 127.0.0.1:9650:9650 -p 9651:9651 "IMAGE_ID" /avalanchego/build/avalanchego --public-ip="VPS_IP_ADDRESS"
 
+#FUJI
+docker run -v ~/.avalanchego/:/root/.avalanchego/ -d --restart always -p 9650:9650 -p 9651:9651 "IMAGE_ID" /avalanchego/build/avalanchego --public-ip="VPS_IP_ADDRESS" --network-id=fuji
+
+#SUBNET
+
+docker run -v ~/.avalanchego/:/root/.avalanchego/ -d --restart always -p 9650:9650 -p 9651:9651 "IMAGE_ID" /avalanchego/build/avalanchego --public-ip="VPS_IP_ADDRESS" --whitelisted-subnets=Ai42MkKqk8yjXFCpoHXw7rdTWSHiKEMqh5h8gbxwjgkCUfkrk --network-id=fuji
 
 curl -X POST --data '{
     "jsonrpc":"2.0",
@@ -44,3 +52,6 @@ curl -X POST --data '{
     "method" :"health.getLiveness"
 }' -H 'content-type:application/json;' 127.0.0.1:9650/ext/health
 
+
+# https://go.dev/doc/install
+# https://github.com/ava-labs/spacesvm#joining-the-spaces-demo
