@@ -1,0 +1,85 @@
+use admin
+db.createUser(
+  {
+    user: "feux07",
+    pwd: "bIRfVPGQHqFTJfucM.",
+    roles: [ { role: "userAdminAnyDatabase", db: "admin" }, "readWriteAnyDatabase" ]
+  }
+)
+
+
+db.createUser(
+  {
+    user: "nodelist",
+    pwd: "bIRfVPGQHqFTJxucM.",
+    roles: [ { role: "readWrite", db: "nodelist" }]
+  }
+)
+
+
+docker run -d --restart always -p 27017:27017 -v ~/mongo/data:/data/db --name mongo mongo --auth
+
+docker run -d --restart always -p 27017:33844 -v ~/mongo/data:/data/db -v ~/mongo/data/mongo-secure.pem:/data/mongo-secure.pem --name mongo mongo --auth --tlsMode requireSSL --tlsCertificateKeyFile /data/mongo-secure.pem
+
+
+db.auth("feux07")
+
+
+https://docs.mongodb.com/manual/tutorial/enable-authentication/
+
+
+
+
+openssl genrsa -out nodelist-ca.key -aes256 8192
+
+password
+
+g5Iwd2sxItQI89WXJwxANRx1eqsuzMhC
+
+openssl req -x509 -new -extensions v3_ca -key nodelist-ca.key -days 2000 -out nodelist-ca-pub.crt
+
+
+Country Name (2 letter code) [AU]:TR
+State or Province Name (full name) [Some-State]:ANTALYA
+Locality Name (eg, city) []:ANTALYA
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:nodel.ist
+Organizational Unit Name (eg, section) []:nodel.ist
+Common Name (e.g. server FQDN or YOUR name) []:nodel.ist
+Email Address []:info@nodel.ist
+
+
+openssl req -nodes -newkey rsa:4096 -sha256 -keyout nodelist-db1.key -out nodelist-db1.csr
+
+writing new private key to 'nodelist-db1.key'
+-----
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [AU]:TR
+State or Province Name (full name) [Some-State]:ANTALYA
+Locality Name (eg, city) []:ANTALYA
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:nodel.ist
+Organizational Unit Name (eg, section) []:DB
+Common Name (e.g. server FQDN or YOUR name) []:db1.nodel.ist    
+Email Address []:info@nodel.ist
+
+Please enter the following 'extra' attributes
+to be sent with your certificate request
+A challenge password []:Qpamnr9pkOPaZ1Jy33kDxKQG3GYp5p02
+string is too long, it needs to be no more than 20 bytes long
+A challenge password []:qwertyx1357K.
+An optional company name []:nodel.ist
+
+openssl x509 -req -in nodelist-db1.csr -CA nodelist-ca-pub.crt -CAkey nodelist-ca.key -out nodelist-db1.crt
+
+openssl x509 -CA nodelist-ca-pub.crt -CAkey nodelist-ca.key -CAcreateserial -req -days 2000 -in nodelist-db1.csr -out nodelist-db1.crt
+
+cat nodelist-db1.key nodelist-db1.crt > nodelist-db1.pem
+
+
+https://www.getfilecloud.com/supportdocs/display/cloud/Configure+MongoDB+Cluster+to+Use+TLS-SSL+with+Cluster+Authentication+and+Mongodb+Authentication+on+Linux
+https://mydbops.wordpress.com/2020/05/02/securing-mongodb-cluster-with-tls-ssl/
