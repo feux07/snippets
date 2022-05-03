@@ -1,0 +1,1 @@
+rsync -aHAWXS --numeric-ids --info=progress2 /media/ubuntu/Storage1TB/ /media/ubuntu/Storage2TB/
